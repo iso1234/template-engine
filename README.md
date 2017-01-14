@@ -8,4 +8,4 @@ from template import render_template
 Then you can call the function "render_template".
 It takes two arguments:
 The first is a filename (string) of the template file you would like to render ,
-The second is a context dictionary which defines each variable. Each key of this dictionary needs to be a string.
+The second is a context dictionary which defines each variable. Each key of the context dictionary needs to be a string.

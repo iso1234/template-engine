@@ -1,7 +1,7 @@
 # template-engine
 The template engine I made for the NCSS 2017 group 4 project.
 
-To use just download the file add the following to the top of the python3 file you wish to use it in.
+To use just download the file and add the following to the top of the python3 file you wish to use it in.
 ```python
 from template import render_template
 ```

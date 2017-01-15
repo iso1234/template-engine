@@ -2,26 +2,18 @@ import re
 import html # Used to stop html injections
 import copy # Used to make deepcopys of dictionarys
 
-def render_template(filename:str, context:dict):
-    """ Opens the file and calls the 'program' function.
-        Returns the rendered template file as a string """
+def renderTemplate(filename:str, context:dict):
+    """ Renders HTML from a template file """
     # Get template string
-    f = open(filename, encoding='utf-8')
-    template = f.read()
-    template = template.replace('“', '"') # Removes smart quotes
-    template = template.replace('”', '"') # Ditto
-    f.close()
+    with open(filename, encoding='utf-8') as f:
+        template = f.read()
+        template = template.replace('“', '"') # Removes smart quotes
+        template = template.replace('”', '"') # Ditto
     context = copy.deepcopy(context)
-    # Call program
-    return program(template, context)
-
-def program(string:str, context:dict):
-    """ Runs the entire program 
-    Note: The only reason this exists is because sometimes I need to run
-    the entire program but pass it a string instead of a file. """
-    tree = parse(string) # Parse the template string and create node tree
-    ret = render(tree, context) # Render the node tree and return the result
-    return ret
+    # Parse the template string and create node tree
+    tree = parse(template)
+    # Render the node tree and return the result
+    return render(tree, context)
 
 def parse(template:str):
     """ Checks the syntax of the template file 'template'
@@ -347,7 +339,7 @@ class IncludeNode:
             for variable in arguments:
                 key, value = variable.split("=")
                 newContext[key] = eval(value, {}, context)
-        return render_template(fileName, newContext)
+        return renderTemplate(fileName, newContext)
 
 class LetNode:
     def __init__(self, content):

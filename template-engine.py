@@ -2,6 +2,7 @@ import re
 import html # Used to stop html injections
 import copy # Used to make deepcopys of dictionarys
 
+
 def renderTemplate(filename:str, context:dict):
     """ Renders HTML from a template file """
     # Get template string
@@ -15,6 +16,7 @@ def renderTemplate(filename:str, context:dict):
     # Render the node tree and return the result
     return render(tree, context)
 
+
 def parse(template:str):
     """ Checks the syntax of the template file 'template'
         and creates and returns a node tree """
@@ -22,9 +24,11 @@ def parse(template:str):
     nodeTree = lex.parse() # Call the parse method that will parse the string and return a node tree
     return nodeTree
 
+
 def render(nodeTree:object, context:dict):
     """ Calls the .render() method on the head of the node tree """
     return nodeTree.render(context)
+
 
 def getNodeType(string:str):
     """ Returns what type of node 'string' starts with """
@@ -275,6 +279,7 @@ class Lexer: # This checks the syntax and creates a node tree
         # Return an for object
         return forNodeObject
 
+
 class GroupNode:
     def __init__(self, children=None):
         if children == None:
@@ -289,6 +294,7 @@ class GroupNode:
             output.append(str(child.render(context)))
         return "".join(output)
 
+
 class PythonNode:
     def __init__(self, content):
         self.content = content
@@ -299,6 +305,7 @@ class PythonNode:
             return html.escape(str(eval(self.content, {}, context)))
         except NameError: # If there is an unknown variable
             return ""
+
 
 class SafeNode:
     def __init__(self, content):
@@ -311,12 +318,14 @@ class SafeNode:
         except NameError: # If there is an unknown variable
             return ""
 
+
 class TextNode:
     def __init__(self, content):
         self.content = content
 
     def render(self, context):
         return self.content
+
 
 class IncludeNode:
     def __init__(self, content):
@@ -341,6 +350,7 @@ class IncludeNode:
                 newContext[key] = eval(value, {}, context)
         return renderTemplate(fileName, newContext)
 
+
 class LetNode:
     def __init__(self, content):
         self.content = content
@@ -349,6 +359,7 @@ class LetNode:
         var, expression = self.content[2:-2].replace("let", "").strip().split("=")
         context[var.strip()] = eval(expression, {}, context)
         return ""
+
 
 class IfNode:
     def __init__(self):
@@ -379,6 +390,7 @@ class IfNode:
             for child in ifFalse:
                 output.append(str(child.render(context)))
         return "".join(output)
+        
         
 class ForNode:
     def __init__(self):

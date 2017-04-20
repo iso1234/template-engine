@@ -6,7 +6,7 @@ import copy # Used to make deepcopys of dictionarys
 def renderTemplate(filename:str, context:dict):
     """ Renders HTML from a template file """
     # Get template string
-    with open(filename, encoding='utf-8') as f:
+    with open("templates/" + filename, encoding='utf-8') as f:
         template = f.read()
         template = template.replace('“', '"') # Removes smart quotes
         template = template.replace('”', '"') # Ditto
@@ -335,6 +335,8 @@ class IncludeNode:
         # Create a string for the file name and a string for the arguments (variable assignments)
         fileName, *argumentString = self.content[2:-2].replace("include", "", 1).strip().split(" ")
         argumentString = " ".join(argumentString)
+        # Remove any quotation marks
+        fileName = fileName.strip("'").strip('"')
         # Split the arguments up
         arguments = []
         match = re.match(r'( *\w* *= *\w*)', argumentString)
